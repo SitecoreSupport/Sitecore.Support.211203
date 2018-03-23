@@ -29,7 +29,13 @@
             },
             execute: function (context) {
                 var postContext = context || this.currentContext;
-                ExperienceEditor.PipelinesUtil.generateRequestProcessor("ExperienceEditor.Versions.SelectLayout", function (response) {
+                //Sitecore.Support.211203
+                var processorAndSiteName = "ExperienceEditor.Versions.SelectLayout";
+                if (postContext && postContext.currentContext && postContext.currentContext.siteName) {
+                    processorAndSiteName = processorAndSiteName + "?sc_site=" + postContext.currentContext.siteName;
+                }
+
+                ExperienceEditor.PipelinesUtil.generateRequestProcessor(processorAndSiteName, function(response) {
                     ExperienceEditor.getPageEditingWindow().location.reload();
                 }, { value: encodeURIComponent(context.currentContext.argument) }).execute(postContext);
             },
